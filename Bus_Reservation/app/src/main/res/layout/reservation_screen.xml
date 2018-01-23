@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnWidth="90dp"
+        android:columnCount="2"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="5dp"
+        android:horizontalSpacing="5dp"
+        android:stretchMode="columnWidth"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/r_btn11"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="#0000ff"
+            android:onClick="R_B11_clicked"/>
+
+        <Button
+            android:id="@+id/r_btn12"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="#0000ff"
+            android:onClick="R_B12_clicked"/>
+
+        <Button
+            android:id="@+id/r_btn21"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="#0000ff"
+            android:onClick="R_B21_clicked"/>
+
+        <Button
+            android:id="@+id/r_btn22"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="#0000ff"
+            android:onClick="R_B22_clicked"/>
+
+        <Button
+            android:id="@+id/r_btn31"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="#0000ff"
+            android:onClick="R_B31_clicked"/>
+
+        <Button
+            android:id="@+id/r_btn32"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="#0000ff"
+            android:onClick="R_B32_clicked"/>
+
+    </GridLayout>
+    <!--android:inputType="number": 숫자만 받을 수 있도록 세팅해줌-->
+
+
+</RelativeLayout>
