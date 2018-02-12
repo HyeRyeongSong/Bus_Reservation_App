@@ -2,6 +2,7 @@ package com.example.hyeryeongsong.bus_reservation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +17,8 @@ import java.util.ArrayList;
 
 public class ReservationActivity extends Activity
 {
-    //define variables for this Activity
+    DBHandler controller;
+
     ArrayList<Integer> reserve;
 
     Button button11;
@@ -32,49 +34,60 @@ public class ReservationActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservation_screen);
 
-        //make an ArrayList for checking if it's reserved or not
+        controller = new DBHandler(getApplicationContext());
+
         reserve = new ArrayList<Integer>();
 
-        //initialize all seat (not reserved yet)
-        reserve.add(1);
-        reserve.add(1);
-        reserve.add(1);
-        reserve.add(1);
-        reserve.add(1);
-        reserve.add(1);
-
-        //connect button in .xml with .java
         button11 = (Button) findViewById(R.id.r_btn11);
         button12 = (Button) findViewById(R.id.r_btn12);
         button21 = (Button) findViewById(R.id.r_btn21);
         button22 = (Button) findViewById(R.id.r_btn22);
         button31 = (Button) findViewById(R.id.r_btn31);
         button32 = (Button) findViewById(R.id.r_btn32);
+
+        for(int i = 0 ; i < controller.countData(); i++) {
+            Cursor c;
+            c = controller.select_seat(i+1);
+            reserve.add(c.getInt(c.getColumnIndex("reserved")));
+
+            int color = -1;
+
+            if(reserve.get(i) == 0) {
+                color = 0xFF0000FF;
+            } else
+                color = 0xFFFF0000;
+
+            if(color != -1)
+                Reserve_seat(i,color);
+        }
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
+
         if (requestCode == 1) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-                // Do something with the contact here (bigger example below)
                 int seatNum = data.getIntExtra("seatNum",-1);
+                reserve = data.getIntegerArrayListExtra("list");
+
                 Log.d("seatNum","seatNum : " + seatNum);
 
                 int color = -1;
                 Log.d("color", "color : " + color);
 
-                if(seatNum >= 10) {
-                    //it's reserved
-                    seatNum -= 10;
+                //it's reserved
+                if(reserve.get(seatNum) == 1)
+                {
                     color = 0xFFFF0000;
-                } else if (seatNum >= 0) {
-                    //it's not reserved
+                }
+                //it's not reserved
+                else if (reserve.get(seatNum) == 0)
+                {
                     color = 0xFF0000FF;
-                } else {
+                }
+                else
+                {
                     Toast.makeText(this,"Wrong Reservation result",Toast.LENGTH_SHORT).show();
                 }
 
@@ -89,119 +102,120 @@ public class ReservationActivity extends Activity
         }
     }
 
-    //******************************************************************************************************
-    // Button controllors
-    // R_B == Reservation Button
-    // R_B11 ~ R_B32 is the seat
 
     public void R_B11_clicked(View v) {
-        int seatNum = 0;
+        int seatNum = 1;
 
-        if(reserve.get(seatNum) == 0) {
+        if(reserve.get(seatNum-1) == 1) {
             Toast.makeText(this,"This seat is already reserved",Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, InfoActivity.class);
 
-            intent.putExtra("num", 11);
+            intent.putExtra("seatNum", seatNum-1);
+            intent.putIntegerArrayListExtra("list", reserve);
+
             startActivityForResult(intent, 1);
         }
     }
 
     public void R_B12_clicked(View v) {
-        int seatNum = 1;
+        int seatNum = 2;
 
-        if(reserve.get(seatNum) == 0) {
+        if(reserve.get(seatNum-1) == 1) {
             Toast.makeText(this,"This seat is already reserved",Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, InfoActivity.class);
 
-            intent.putExtra("num", 12);
+            intent.putExtra("seatNum", seatNum-1);
+            intent.putIntegerArrayListExtra("list", reserve);
+
             startActivityForResult(intent, 1);
         }
     }
 
     public void R_B21_clicked(View v) {
-        int seatNum = 2;
+        int seatNum = 3;
 
-        if(reserve.get(seatNum) == 0) {
+        if(reserve.get(seatNum-1) == 1) {
             Toast.makeText(this,"This seat is already reserved",Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, InfoActivity.class);
 
-            intent.putExtra("num", 21);
+            intent.putExtra("seatNum", seatNum-1);
+            intent.putIntegerArrayListExtra("list", reserve);
+
             startActivityForResult(intent, 1);
         }
     }
 
     public void R_B22_clicked(View v) {
-        int seatNum = 3;
+        int seatNum = 4;
 
-        if(reserve.get(seatNum) == 0) {
+        if(reserve.get(seatNum-1) == 1) {
             Toast.makeText(this,"This seat is already reserved",Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, InfoActivity.class);
 
-            intent.putExtra("num",22);
+            intent.putExtra("seatNum", seatNum-1);
+            intent.putIntegerArrayListExtra("list", reserve);
+
             startActivityForResult(intent,1);
         }
     }
 
     public void R_B31_clicked(View v) {
-        int seatNum = 4;
+        int seatNum = 5;
 
-        if(reserve.get(seatNum) == 0) {
+        if(reserve.get(seatNum-1) == 1) {
             Toast.makeText(this,"This seat is already reserved",Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, InfoActivity.class);
 
-            intent.putExtra("num", 31);
+            intent.putExtra("seatNum", seatNum-1);
+            intent.putIntegerArrayListExtra("list", reserve);
+
             startActivityForResult(intent, 1);
         }
     }
 
     public void R_B32_clicked(View v) {
-        int seatNum = 5;
+        int seatNum = 6;
 
-        if(reserve.get(seatNum) == 0) {
+        if(reserve.get(seatNum-1) == 1) {
             Toast.makeText(this,"This seat is already reserved",Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, InfoActivity.class);
 
-            intent.putExtra("num", 32);
+            intent.putExtra("seatNum", seatNum-1);
+            intent.putIntegerArrayListExtra("list", reserve);
+
             startActivityForResult(intent, 1);
         }
     }
 
-    //**********************************************************************************************
-    //This function is for change the button's contribution
-    //if specific seat is reserved, then change its color from blue to red
+
     public void Reserve_seat(int num, int color) {
         switch (num) {
             case 0:
                 button11.setBackgroundColor(color);
-                reserve.set(num,0);
                 break;
             case 1:
                 button12.setBackgroundColor(color);
-                reserve.set(num,0);
                 break;
             case 2:
                 button21.setBackgroundColor(color);
-                reserve.set(num,0);
                 break;
             case 3:
                 button22.setBackgroundColor(color);
-                reserve.set(num,0);
                 break;
             case 4:
                 button31.setBackgroundColor(color);
-                reserve.set(num,0);
                 break;
             case 5:
                 button32.setBackgroundColor(color);
-                reserve.set(num,0);
                 break;
         }
+
     }
 }
 

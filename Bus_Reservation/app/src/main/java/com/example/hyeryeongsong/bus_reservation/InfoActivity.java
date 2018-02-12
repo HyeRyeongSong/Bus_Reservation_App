@@ -5,38 +5,45 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by HyeRyeongSong on 2018. 1. 24..
  */
 
 public class InfoActivity extends Activity
 {
-    int seatNum; //for sending info about state of seat with the seat number
-    int num; //for getting seat number from previous Activity
+    DBHandler controller;
+
+    ArrayList<Integer> reserve;
+    int seatNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_screen);
 
+        controller = new DBHandler(getApplicationContext());
+        reserve = new ArrayList<Integer>();
+
         Intent intent = getIntent();
-        num = intent.getIntExtra("num",-1);
+        seatNum = intent.getIntExtra("seatNum",-1);
+        reserve = intent.getIntegerArrayListExtra("list");
 
-        if(num < 0)
-            finish();
-
-        seatNum = NtoSN(num);
-
-        if(seatNum < 0)
+        if(reserve.get(seatNum) == 1)
             finish();
     }
 
     //reserve
     public void ok_b_clicked(View v) {
-        seatNum += 10;
+
+        controller.update_reserved(seatNum+1, 1);
+
+        reserve.add(seatNum, 1);
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("seatNum",seatNum);
+        returnIntent.putExtra("list", reserve);
         setResult(Activity.RESULT_OK,returnIntent);
 
         finish();
@@ -44,32 +51,12 @@ public class InfoActivity extends Activity
 
     //not reserve
     public void cancel_b_clicked(View v) {
+
         Intent returnIntent = new Intent();
         returnIntent.putExtra("seatNum",seatNum);
+        returnIntent.putExtra("list", reserve);
         setResult(Activity.RESULT_OK,returnIntent);
 
         finish();
-    }
-
-    //There are 2 valuable : num & seatNum
-    //change the format from num to seatNum
-    public int NtoSN(int num) {
-        switch (num) {
-            case 11:
-                return 0;
-            case 12:
-                return 1;
-            case 21:
-                return 2;
-            case 22:
-                return 3;
-            case 31:
-                return 4;
-            case 32:
-                return 5;
-        }
-
-        //-1 mean error
-        return -1;
     }
 }
