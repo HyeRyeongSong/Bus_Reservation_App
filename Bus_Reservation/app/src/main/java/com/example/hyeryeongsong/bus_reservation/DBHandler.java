@@ -17,6 +17,7 @@ public class DBHandler
 
     //Create DB
     public DBHandler(Context context) {
+        //helper.onUpgrade(db,1,2);
         helper = new DBOpenHelper(context, "reserve.db",null,1);
     }
 
@@ -106,7 +107,14 @@ public class DBHandler
     public void insert_user(String id, String pw) {
         db = helper.getWritableDatabase();
 
-        db.execSQL("insert into userInformation values(" + id + ", " + pw +");");
+        ContentValues values = new ContentValues();
+
+        values.put("id", id);
+        values.put("pw", pw);
+
+        Log.d("DB","insert user1");
+        db.insert("userInformation", null, values);
+        Log.d("DB","insert user2");
     }
 
     //update user data in DB
@@ -127,13 +135,24 @@ public class DBHandler
         db = helper.getReadableDatabase();
         Cursor c = db.query("userInformation", null, null, null, null, null, null);
 
-        c.moveToNext();
+        Log.d("dbbb","aa " + c.getCount());
 
-        while(c.getString(c.getColumnIndex("id")) != id) {
+        if(c.getCount() == 0)
+            return false;
+        else
+            c.moveToNext();
+        Log.d("dbbb","aa " + c.getCount());
+
+        int i=0;
+
+        while(!c.getString(c.getColumnIndex("id")).equals(id) ) {
+            ++i;
+            if(i == c.getCount())
+                break;
             c.moveToNext();
         }
 
-        if(c.getString(c.getColumnIndex("pw")) == pw)
+        if(c.getString(c.getColumnIndex("pw")).equals(pw))
             return true;
 
         return false;

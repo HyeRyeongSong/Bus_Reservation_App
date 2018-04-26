@@ -19,9 +19,9 @@ public class SignUpActivity extends Activity
     EditText editPW;
     EditText editPWC;
 
-    String id;
-    String pw;
-    String pwc;
+    String id = "";
+    String pw = "";
+    String pwc = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,14 +37,14 @@ public class SignUpActivity extends Activity
 
     }
 
-    void ok_b_clicked(View v)
+    public void ok_b_clicked(View v)
     {
         Intent returnIntent = new Intent();
         id = editID.getText().toString();
         pw = editPW.getText().toString();
         pwc = editPWC.getText().toString();
 
-        if(pw == pwc)
+        if(pw.equals(pwc))
         {
             returnIntent.putExtra("id", id);
             returnIntent.putExtra("pw", pw);
@@ -58,7 +58,7 @@ public class SignUpActivity extends Activity
 
     }
 
-    void cancel_b_clicked(View v)
+    public void cancel_b_clicked(View v)
     {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK,returnIntent);

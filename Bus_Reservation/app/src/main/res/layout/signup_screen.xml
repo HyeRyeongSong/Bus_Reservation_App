@@ -76,7 +76,8 @@
                 android:gravity="left"
                 android:hint="PW here"
                 android:inputType="text"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:password="true"/>
 
             <TextView
                 android:id="@+id/pwc_txt"
@@ -97,7 +98,8 @@
                 android:gravity="left"
                 android:hint="Confirm Password"
                 android:inputType="text"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:password="true"/>
 
 
         </RelativeLayout>

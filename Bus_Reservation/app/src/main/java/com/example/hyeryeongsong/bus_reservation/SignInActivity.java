@@ -15,14 +15,16 @@ public class SignInActivity extends AppCompatActivity
     EditText editID;
     EditText editPW;
 
-    String id;
-    String pw;
+    String id = "";
+    String pw = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_screen);
+
+        controller = new DBHandler(getApplicationContext());
 
         editID = (EditText) findViewById(R.id.id_edit);
         editPW = (EditText) findViewById(R.id.pw_edit);
@@ -35,18 +37,18 @@ public class SignInActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 id = data.getStringExtra("id");
                 pw = data.getStringExtra("pw");
+                Log.d("id_1", "id_1: " + id);
+                Log.d("pw_1", "pw_1: " + pw);
                 controller.insert_user(id, pw);
             }
         }
     }
 
 
-    void login_b_clicked(View v)
+    public void login_b_clicked(View v)
     {
         id = editID.getText().toString();
         pw = editPW.getText().toString();
-
-        Log.d("id", "id: " + id);
 
         if(controller.select_user(id, pw))
         {
@@ -58,7 +60,7 @@ public class SignInActivity extends AppCompatActivity
         }
     }
 
-    void signup_b_clicked(View v)
+    public void signup_b_clicked(View v)
     {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivityForResult(intent, 2);
